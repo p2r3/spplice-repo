@@ -1,0 +1,288 @@
+var splits = {};
+
+/*
+  This script creates dummy relays for entities we're splitting on.
+  This lets us use SAR to listen for outputs rather than inputs.
+*/
+
+splits.onLoad <- function () {
+
+  // Create functions for testing the outputs of entities we're splitting on
+
+  let buttonTest = function (ent) {
+
+    ppmod.fire(ent, "Press");
+
+  };
+
+  let heavyButtonTest = function (ent) {
+
+    let cubeType = "cube";
+    if (ent.GetClassname() == "prop_floor_ball_button") cubeType = "sphere";
+
+    // Creating cubes is safer than using the PressIn input, strangely enough
+    ppmod.create("ent_create_portal_weighted_" + cubeType, function (cube) {
+      cube.SetOrigin(ent.GetOrigin());
+    });
+
+  };
+
+  let laserCatcherTest = function (ent) {
+
+    ppmod.create("env_portal_laser", function (emitter) {
+
+      emitter.SetOrigin(ent.GetOrigin() + ent.GetForwardVector() * 64);
+      emitter.SetForwardVector(Vector() - ent.GetForwardVector());
+      ppmod.fire(emitter, "TurnOn");
+
+    });
+
+  };
+
+  let laserRelayTest = function (ent) {
+
+    ppmod.create("env_portal_laser", function (emitter) {
+
+      emitter.SetOrigin(ent.GetOrigin() + ent.GetUpVector() * 64);
+      emitter.SetForwardVector(Vector() - ent.GetUpVector());
+      ppmod.fire(emitter, "TurnOn");
+
+    });
+
+  };
+
+  // Push the entities we're splitting on to a list
+
+  let ent = null;
+
+  // Pedestal buttons
+  while (ent = ppmod.get("prop_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Button", test: buttonTest});
+  while (ent = ppmod.get("prop_under_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Button", test: buttonTest});
+
+  // Floor buttons
+  while (ent = ppmod.get("prop_floor_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Heavy Button", test: heavyButtonTest});
+  while (ent = ppmod.get("prop_floor_cube_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Heavy Button", test: heavyButtonTest});
+  while (ent = ppmod.get("prop_floor_ball_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Heavy Button", test: heavyButtonTest});
+  while (ent = ppmod.get("prop_under_floor_button", ent)) epochtal.beans.push({ent: ent, output: "OnPressed", name: "Heavy Button", test: heavyButtonTest});
+
+  // Laser receivers
+  while (ent = ppmod.get("prop_laser_catcher", ent)) epochtal.beans.push({ ent: ent, output: "OnPowered", name: "Laser Catcher", test: laserCatcherTest });
+  while (ent = ppmod.get("prop_laser_relay", ent)) epochtal.beans.push({ ent: ent, output: "OnPowered", name: "Laser Relay", test: laserRelayTest });
+
+  for (let i = 0; i < epochtal.beans.len(); i ++) {
+
+    if (!epochtal.beans[i].ent.GetName().len()) {
+      let pos = epochtal.beans[i].ent.GetOrigin();
+      ppmod.keyval(epochtal.beans[i].ent, "Targetname", `bean${pos.x}_${pos.y}_${pos.z}`);
+    }
+
+    let bean = Entities.CreateByClassname("logic_relay");
+    ppmod.keyval(bean, "Targetname", epochtal.beans[i].ent.GetName() + "_bean");
+
+    ppmod.addoutput(epochtal.beans[i].ent, epochtal.beans[i].output, bean, "Trigger");
+    bean.SetOrigin(epochtal.beans[i].ent.GetOrigin());
+
+  }
+
+}
+
+/*
+  This sets up the SAR speedrun category, adding splits for relevant actions
+  The start and stop rules are constant, while the rest uses common entity I/O
+*/
+
+splits.onSetup <- function (setupDone) {
+
+  let actionRule = function (name, condition, action) {
+    bcon(`sar_speedrun_cc_rule "${name}" ${condition} action=${action}`);
+  }
+
+  let entityRule = function (name, targetname, input) {
+    bcon(`sar_speedrun_cc_rule "${name}" entity targetname=${targetname} inputname=${input}`);
+  }
+
+  // Start and stop rules remain the same on (almost) every PTI map
+  actionRule("Start", "load", "force_start");
+  actionRule("Stop", "entity targetname=@relay_pti_level_end inputname=Trigger", "stop");
+
+  let doors = [], wportals = [], firstDoor = ppmod.get("prop_testchamber_door");
+  let ent = null, pos = ppmod.get("player").GetOrigin();
+
+  // Find all basic testchamber doors
+  while (ent = ppmod.get("prop_testchamber_door", ent)) {
+
+    if (ent.GetName().len() == 0) continue;
+
+    // Store the first chamber door in the level
+    if ((ent.GetOrigin() - pos).LengthSqr() < (firstDoor.GetOrigin() - pos).LengthSqr()) {
+      firstDoor = ent;
+    }
+
+    // Check for nearby world portals to avoid duplicate doors (most PTI maps use these)
+    let wportal = Entities.FindByClassnameNearest("linked_portal_door", ent.GetCenter(), 512);
+
+    if (wportal) {
+
+      let found = false;
+      for (let i = 0; i < wportals.len(); i++) {
+        if (wportals[i] == wportal.GetName()) {
+          found = true;
+          break;
+        }
+      }
+
+      if (found) continue;
+      wportals.push(wportal.GetPartnername());
+
+    }
+
+    doors.push({
+      ent: ent,
+      input: "Open"
+    });
+
+  }
+
+  // Find all heavy doors
+  while (ent = ppmod.get("models/props/vert_door/vert_door_animated.mdl", ent)) {
+
+    if (ent.GetName().len() == 0) continue;
+
+    doors.push({
+      ent: ent,
+      input: "SetAnimation"
+    });
+
+  }
+
+  // Find all old Aperture style push-to-open doors
+  while (ent = ppmod.get("models/props_underground/underground_door_dynamic.mdl", ent)) {
+
+    let button = Entities.FindByClassnameNearest("func_button", ent.GetCenter(), 512);
+    if (!button) continue;
+
+    doors.push({
+      ent: button,
+      input: "Use"
+    });
+
+  }
+
+  // Find first world portal at first chamber door, set that as new reference position
+  // Most PTI and BEEMod maps use this and it messes with the order of automatic splits
+  if (firstDoor) {
+
+    let firstPortal = Entities.FindByClassnameNearest("linked_portal_door", firstDoor.GetCenter(), 512);
+
+    if (firstPortal) {
+
+      pos = firstPortal.GetPartnerInstance().GetOrigin();
+      let firstDoorClone = Entities.FindByClassnameNearest("prop_testchamber_door", pos, 512);
+
+      if (firstDoorClone) {
+        // Make sure first door is on the other side of the first portal
+        for (let i = 0; i < doors.len(); i++) {
+          if (doors[i].ent == firstDoor) doors.remove(i);
+          else if (doors[i].ent == firstDoorClone) doors.remove(i);
+        }
+        doors.push({ ent: firstDoorClone, input: "Open" });
+      }
+
+    }
+
+  }
+
+  let entSortFunction = function (a, b) {
+
+    let aDist = (a.ent.GetOrigin() - pos).LengthSqr();
+    let bDist = (b.ent.GetOrigin() - pos).LengthSqr();
+
+    if (aDist > bDist) return 1;
+    if (aDist < bDist) return -1;
+    return 0;
+
+  };
+
+  // Sort doors by distance to the reference (spawn) position
+  doors.sort(entSortFunction);
+
+  // Sort chamber elements by distance to the reference (spawn) position
+  epochtal.beans.sort(entSortFunction);
+
+  // Really just a sanity check, as most (if not all) doors will be named
+  for (let i = 0; i < doors.len(); i++) {
+    if (doors[i].ent.GetName().len()) continue;
+    ppmod.keyval(doors[i].ent, "Targetname", UniqueString("door"));
+  }
+
+  // Check for overlapping door and button splits with an output
+  epochtal.splitsOverlap <- [];
+  for (let i = 0; i < doors.len(); i++) {
+
+    ppmod.fire(doors[i].ent, "Unlock");
+    ppmod.fire(doors[i].ent, "Close");
+
+    ppmod.addscript(doors[i].ent, "OnOpen", function () {
+      epochtal.splitsOverlap.push(doors[i].ent);
+    });
+    ppmod.addscript(doors[i].ent, "OnClose", function () {
+      epochtal.splitsOverlap.push(doors[i].ent);
+    });
+
+  }
+
+  // Create numbered splits for all sorted chamber elements
+  let beanTypeCount = {};
+  for (let i = 0; i < epochtal.beans.len(); i++) {
+
+    let curr = epochtal.beans[i];
+
+    if (!(curr.name in beanTypeCount)) {
+      beanTypeCount[curr.name] <- 0;
+    }
+
+    // First, assign a split to the element's assisting logic_relay
+    entityRule(`${curr.name} ${++beanTypeCount[curr.name]}`, curr.ent.GetName() + "_bean", "Trigger");
+
+    // Then, run the output test function to check for immediate outputs and prevent overlapping splits
+    curr.test(curr.ent);
+
+  }
+
+  ppmod.wait(function () {
+
+    // Create named splits for the first and last doors
+    if (doors.len() >= 2) {
+
+      entityRule("Entrance Door", doors[0].ent.GetName(), doors[0].input);
+      entityRule("Exit Door", doors[doors.len() - 1].ent.GetName(), doors[doors.len() - 1].input);
+      // Assign splits again but in lowercase
+      entityRule("Entrance Door ", doors[0].ent.GetName(), doors[0].input.tolower());
+      entityRule("Exit Door ", doors[doors.len() - 1].ent.GetName(), doors[doors.len() - 1].input.tolower());
+
+    }
+
+    // Create numbered splits for all sorted doors 
+    let currDoor = 1;
+    for (let i = 1; i < doors.len() - 1; i++) {
+
+      // Prevent the door split from overlapping a button split
+      let found = false;
+      for (let j = 0; j < epochtal.splitsOverlap.len(); j ++) {
+        if (doors[i].ent == epochtal.splitsOverlap[j]) {
+          found = true;
+          break;
+        }
+      }
+      if (found) continue;
+
+      entityRule(`Door ${++currDoor}`, doors[i].ent.GetName(), doors[i].input);
+      entityRule(`Door ${currDoor} `, doors[i].ent.GetName(), doors[i].input.tolower());
+
+    }
+
+    ppmod.wait(setupDone, FrameTime());
+
+  }, 10);
+
+}

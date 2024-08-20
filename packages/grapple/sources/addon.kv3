@@ -1,0 +1,20 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	mod = "Portal 2: Grapple Gun (v1.01)"
+	description = "Welcome to \"Portal 2: Grapple Gun\", a mod where the portal gun is replaced with a grapple gun!\nEnjoy! :D\n-----\nControls:\nLeft-Click - Set a grapple point/Grab object from far away.\nRight-Click (whilst holding Left-Click) - Move to grapple point.\n-----\nFunctions of the grapple gun:\n- Moving the player to a point.\n- Picking up objects from a distance.\n-----\nExtra features:\n- Fully playable P2 campaign! Maps which would have previously been impossible with just the grapple gun have been altered to now be possible, meaning you can play through the whole original campaign without (hopefully) any issues!\n- Customisability! There are some console commands you can use to alter how the gun behaves! (See below)\n-----\nConsole Commands (usable by typing in the console “script [command]” - no quotes):\n\nSetMaxGrappleDistance(value) - Sets the max distance the gun can reach, when attempting to set a point. (Default value is: 1500)\n\nSetGrappleSpeed(value) - Sets the speed at which the player is pulled towards a point. Can be extremely sensitive to change. (Default value is 1.0)\n\nEnableSparkFX(value). - EXPERIMENTAL. Value can be either 1 or 0, corresponding to enabled and disabled, respectively. Enables the display of a spark effect where a point is sent. (Default value is 0).\n---\nWARNING: By default, any custom values these console commands are set to, will have to be set manually on the load of each map. This is due to limitations inside of vscript.\n-----\nAdditional Notes:\n- Content creators! If you want to make a video on this mod, feel free to! However, you must make it explicitly clear that this mod was created by me, and provide a link to this trailer and/or my channel in the description of your video. You must not provide the straight download link, link your audience to this video instead.\n- If you have any issues with the installation of this mod, and/or just any issues in general, please don’t hesitate to contact me! You can leave a comment on this workshop listing, the trailer, or by dropping me a DM on Discord! (My name is @ripriprip).\n----------\nCredits:\nBadpoolinator - Playtesting, feedback\nlaVashik - Portal 2 PCapture VScript Library (Link: https://github.com/IaVashik/PCapture-LIB/tree/main)"
+	type = ""
+	id = 3200804929
+	thumbnail = "image.jpg"
+	authors = [  ]
+	dependencies = [  ]
+	tags = 
+	[
+		"Singleplayer",
+		"Scripts",
+		"Materials/Textures",
+	]
+	ignore = [  ]
+	metadata = 
+	{
+	}
+}

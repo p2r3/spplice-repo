@@ -1,0 +1,5 @@
+exec joystick.cfg
+exec autoexec.cfg
+stuffcmds
+
+map sp_a1_intro1

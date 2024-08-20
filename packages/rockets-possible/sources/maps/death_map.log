@@ -1,0 +1,80 @@
+
+
+
+Using shader api: shaderapiempty.dll
+materialPath: D:\games\Steam\steamapps\common\Portal 2\portal2\materials
+Loading d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.vmf
+fixing up env_cubemap materials on brush sides...
+0...1...2...3...4...5...6...7...8...9...10**** leaked ****
+Processing areas...done (0)
+Building Faces...done (0)
+FixTjuncs...
+PruneNodes...
+WriteBSP...
+done (0)
+Finding displacement neighbors...
+Finding lightmap sample positions...
+Displacement Alpha : 0...1...2...3...4...5...6...7...8...9...10
+Building Physics collision data...
+done (0) (577 bytes)
+Placing detail props : 0...1...2...3...4...5...6...7...8...9...10
+Compacting texture/material tables...
+Reduced 3 texinfos to 3
+Reduced 1 texdatas to 1 (21 bytes to 21)
+Writing d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.bsp
+
+nummapplanes:     (    28 / 65536 )
+nummapbrushes:    (     1 /  8192 )
+nummapbrushsides: (     6 / 65536 )
+num_map_overlays: (     0 /   512 )
+nummodels:        (     1 /  1024 )
+num_entities:     (     2 / 16384 )
+
+0 seconds elapsed
+
+
+
+6 threads
+reading d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.bsp
+reading d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.prt
+LoadPortals: couldn't read d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.prt
+
+
+
+Using shader api: shaderapiempty.dll
+materialPath: D:\games\Steam\steamapps\common\Portal 2\portal2\materials
+Loading D:\games\Steam\steamapps\common\Portal 2\portal2_dlc5\maps\death_map.vmf
+fixing up env_cubemap materials on brush sides...
+0...1...2...3...4...5...6...7...8...9...10**** leaked ****
+Processing areas...done (0)
+Building Faces...done (0)
+FixTjuncs...
+PruneNodes...
+WriteBSP...
+done (0)
+Finding displacement neighbors...
+Finding lightmap sample positions...
+Displacement Alpha : 0...1...2...3...4...5...6...7...8...9...10
+Building Physics collision data...
+done (0) (577 bytes)
+Placing detail props : 0...1...2...3...4...5...6...7...8...9...10
+Compacting texture/material tables...
+Reduced 3 texinfos to 3
+Reduced 1 texdatas to 1 (21 bytes to 21)
+Writing D:\games\Steam\steamapps\common\Portal 2\portal2_dlc5\maps\death_map.bsp
+
+nummapplanes:     (    28 / 65536 )
+nummapbrushes:    (     1 /  8192 )
+nummapbrushsides: (     6 / 65536 )
+num_map_overlays: (     0 /   512 )
+nummodels:        (     1 /  1024 )
+num_entities:     (     2 / 16384 )
+
+0 seconds elapsed
+
+
+
+6 threads
+reading d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.bsp
+reading d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.prt
+LoadPortals: couldn't read d:\games\steam\steamapps\common\portal 2\portal2_dlc5\maps\death_map.prt

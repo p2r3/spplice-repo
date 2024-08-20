@@ -1,0 +1,29 @@
+"dingus.meow"
+{
+	"channel"    "CHAN_AUTO"
+    "volume"     "VOL_NORM"
+    "pitch"      "PITCH_NORM"
+    "soundlevel" "SNDLVL_NONE"
+	"volume"		"1.0"
+	"wave"			"dingus/meow.wav"
+}
+
+"dingus.meow2"
+{
+	"channel"    "CHAN_AUTO"
+    "volume"     "VOL_NORM"
+    "pitch"      "PITCH_NORM"
+    "soundlevel" "SNDLVL_NONE"
+	"volume"		"1.0"
+	"wave"			"dingus/meow2.wav"
+}
+
+"dingus.spin"
+{
+	"channel"    "CHAN_AUTO"
+    "volume"     "VOL_NORM"
+    "pitch"      "PITCH_NORM"
+    "soundlevel" "SNDLVL_NONE"
+	"volume"		"1.0"
+	"wave"			"dingus/spin.wav"
+}

@@ -1,0 +1,1 @@
+IncludeScript(!IsMultiplayer() ? "backpack-pc" : "")

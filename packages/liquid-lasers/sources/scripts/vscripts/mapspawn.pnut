@@ -1,0 +1,222 @@
+if (!("Entities" in this)) return;
+IncludeScript("ppmod3");
+
+var cubeArr = [];
+
+let main = function () {
+
+  SendToConsole("bounce_paint_color 255 0 0 255");
+  SendToConsole("con_filter_enable 1");
+  SendToConsole("con_filter_text_out \"StartParticleEffect:\"");
+
+  let ent = null;
+  while (ent = ppmod.get("env_portal_laser", ent)) {
+
+    let emitterName = UniqueString("existing_emitter");
+
+    ppmod.keyval(ent, "Targetname", emitterName);
+    ppmod.fire(ent, "TurnOff");
+
+    ppmod.create("info_paint_sprayer", function (sprayer) {
+
+      sprayer.SetOrigin(ent.GetOrigin() + ent.GetForwardVector() * 16);
+      sprayer.SetForwardVector(ent.GetForwardVector());
+
+      ppmod.keyval(sprayer, "blobs_per_second", 20);
+      ppmod.keyval(sprayer, "min_speed", 1000);
+      ppmod.keyval(sprayer, "max_speed", 1000);
+      ppmod.keyval(sprayer, "blob_spread_radius", 0);
+      ppmod.keyval(sprayer, "blob_streak_percentage", 0);
+
+      ppmod.fire(sprayer, "ChangePaintType", 2);
+      ppmod.fire(sprayer, "Start");
+      ppmod.fire(sprayer, "SetParent", emitterName);
+
+    });
+
+  }
+
+  while (ent = ppmod.get("prop_laser_catcher", ent)) {
+
+    let emitterName = UniqueString("emitter");
+    let cleanserName = UniqueString("cleanser");
+
+    ppmod.create("env_portal_laser", function (emitter) {
+
+      emitter.SetOrigin(ent.GetOrigin() - ent.GetForwardVector() * 16);
+      emitter.SetForwardVector(ent.GetForwardVector());
+
+      ppmod.keyval(emitter, "Targetname", emitterName);
+      ppmod.keyval(emitter, "CollisionGroup", 1);
+      ppmod.fire(emitter, "DisableDraw");
+      ppmod.fire(emitter, "TurnOff");
+
+      ppmod.fire(emitter, "SetParent", ent.GetName());
+
+    });
+
+    ppmod.create("ent_create_portal_reflector_cube", function (cube) {
+
+      cube.SetOrigin(ent.GetOrigin() + ent.GetForwardVector() * 42);
+      cube.SetForwardVector(Vector() - ent.GetForwardVector());
+
+      let cleanser = ppmod.trigger(cube.GetOrigin(), Vector(1, 1, 1), "paint_cleanser");
+      ppmod.keyval(cleanser, "SpawnFlags", 8);
+      ppmod.keyval(cleanser, "Targetname", cleanserName);
+
+      ppmod.interval(function () {
+        cleanser.SetAbsOrigin(cube.GetOrigin());
+      });
+
+      ppmod.fire(cube, "DisableMotion");
+      ppmod.fire(cube, "DisableDraw");
+      ppmod.fire(cube, "SetParent", ent.GetName());
+      ppmod.keyval(cube, "Targetname", "gel_receptor_cube");
+      ppmod.keyval(cube, "CollisionGroup", 2);
+
+      ppmod.addscript(cube, "OnPainted", function () {
+
+        ppmod.fire(emitterName, "TurnOn");
+        ppmod.fire(cleanser, "Disable");
+        ppmod.fire(cleanser, "Enable", "", FrameTime());
+
+        let prevEmitterStop = ppmod.get(emitterName + "stop");
+        if (prevEmitterStop) prevEmitterStop.Destroy();
+
+        ppmod.wait(`ppmod.fire("${emitterName}", "TurnOff")`, FrameTime() * 4, emitterName + "stop");
+
+      });
+
+    });
+
+  }
+
+  while (ent = ppmod.get("prop_laser_relay", ent)) {
+
+    let emitterName = UniqueString("emitter");
+    let cleanserName = UniqueString("cleanser");
+
+    ppmod.create("env_portal_laser", function (emitter) {
+
+      emitter.SetOrigin(ent.GetOrigin() - ent.GetUpVector() * 16);
+      emitter.SetForwardVector(ent.GetUpVector());
+
+      ppmod.keyval(emitter, "Targetname", emitterName);
+      ppmod.keyval(emitter, "CollisionGroup", 1);
+      ppmod.fire(emitter, "DisableDraw");
+      ppmod.fire(emitter, "TurnOff");
+
+      ppmod.fire(emitter, "SetParent", ent.GetName());
+
+    });
+
+    ppmod.create("ent_create_portal_reflector_cube", function (cube) {
+
+      cube.SetOrigin(ent.GetOrigin() + ent.GetUpVector() * 42);
+      cube.SetForwardVector(Vector() - ent.GetUpVector());
+
+      let cleanser = ppmod.trigger(cube.GetOrigin(), Vector(1, 1, 1), "paint_cleanser");
+      ppmod.keyval(cleanser, "SpawnFlags", 8);
+      ppmod.keyval(cleanser, "Targetname", cleanserName);
+
+      ppmod.interval(function () {
+        cleanser.SetAbsOrigin(cube.GetOrigin());
+      });
+
+      ppmod.fire(cube, "DisableMotion");
+      ppmod.fire(cube, "DisableDraw");
+      ppmod.fire(cube, "SetParent", ent.GetName());
+      ppmod.keyval(cube, "Targetname", "gel_receptor_cube");
+      ppmod.keyval(cube, "CollisionGroup", 2);
+
+      ppmod.addscript(cube, "OnPainted", function () {
+
+        ppmod.fire(emitterName, "TurnOn");
+        ppmod.fire(cleanser, "Disable");
+        ppmod.fire(cleanser, "Enable", "", FrameTime());
+
+        let prevEmitterStop = ppmod.get(emitterName + "stop");
+        if (prevEmitterStop) prevEmitterStop.Destroy();
+
+        ppmod.wait(`ppmod.fire("${emitterName}", "TurnOff")`, FrameTime() * 4, emitterName + "stop");
+
+      });
+
+    });
+
+  }
+
+  ppmod.interval(function () {
+
+    let ent = null;
+    while (ent = ppmod.get("prop_weighted_cube", ent)) {
+
+      if (ent.GetModelName() != "models/props/reflection_cube.mdl") continue;
+      if (ent.GetName() == "gel_receptor_cube") continue;
+
+      let i, found = false;
+      for (i = 0; i < cubeArr.len(); i ++) {
+        if (cubeArr[i] == ent) {
+          found = true;
+          break;
+        }
+      }
+
+      if (found) continue;
+      cubeArr.push(ent);
+
+      ppmod.fire(ent, "Color", "0 0 0");
+      
+      let sprayerName = UniqueString("sprayer");
+
+      ppmod.create("info_paint_sprayer", function (sprayer) {
+
+        sprayer.SetOrigin(ent.GetOrigin() + ent.GetForwardVector() * 32);
+        sprayer.SetForwardVector(ent.GetForwardVector());
+
+        ppmod.keyval(sprayer, "Targetname", sprayerName);
+        ppmod.keyval(sprayer, "blobs_per_second", 20);
+        ppmod.keyval(sprayer, "min_speed", 1000);
+        ppmod.keyval(sprayer, "max_speed", 1000);
+        ppmod.keyval(sprayer, "blob_spread_radius", 0);
+        ppmod.keyval(sprayer, "blob_streak_percentage", 0);
+
+        ppmod.fire(sprayer, "ChangePaintType", 2);
+        ppmod.fire(sprayer, "Stop");
+
+        let cleanser = ppmod.trigger(ent.GetOrigin(), Vector(1, 1, 1), "paint_cleanser");
+        ppmod.keyval(cleanser, "SpawnFlags", 8);
+
+        ppmod.interval(function () {
+          cleanser.SetAbsOrigin(ent.GetOrigin());
+        });
+
+        let oldName = ent.GetName();
+        let newName = UniqueString("tmpname");
+        
+        ppmod.keyval(ent, "Targetname", newName);
+        ppmod.fire(sprayer, "SetParent", newName);
+        ppmod.fire(ent, "AddOutput", "Targetname " + oldName, FrameTime());
+
+      });
+
+      ppmod.addscript(ent, "OnPainted", function () {
+
+        ppmod.fire(sprayerName, "Start");
+
+        let prevSprayerStop = ppmod.get(sprayerName + "stop");
+        if (prevSprayerStop) prevSprayerStop.Destroy();
+
+        ppmod.wait(`ppmod.fire("${sprayerName}", "Stop")`, FrameTime() * 4, sprayerName + "stop");
+
+      });
+
+    }
+
+  });
+
+}
+
+let auto = Entities.CreateByClassname("logic_auto");
+ppmod.addscript(auto, "OnNewGame", main)
+ppmod.addscript(auto, "OnMapTransition", main);

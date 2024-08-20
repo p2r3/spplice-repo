@@ -1,0 +1,6 @@
+exec joystick.cfg
+exec autoexec.cfg
+stuffcmds
+snd_rebuildaudiocache
+
+map sp_a1_intro1

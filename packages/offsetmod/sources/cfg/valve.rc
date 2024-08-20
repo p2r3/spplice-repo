@@ -1,0 +1,18 @@
+// load the base configuration
+//exec default.cfg
+
+// Setup custom controller
+exec joystick.cfg
+
+// run a user script file if present
+exec autoexec.cfg
+
+//
+// stuff command line statements
+//
+stuffcmds
+
+snd_rebuildaudiocache
+player_held_object_use_view_model 1
+alias +mouse_menu "script ::ghostSwap()"
+load ../../../portal2_tempcontent/vault-offset

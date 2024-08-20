@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+    "$basetexture" "crosshair/crosshair_bomb_valid"
+    "$translucent" "1"
+    "$additive" "1"
+}
