@@ -1,0 +1,62 @@
+name: Create distributable packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-archives:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install VPK tools
+        run: pip install vpk
+
+      - name: Process Packages
+        run: |
+          for package_dir in packages/*; do
+
+            sources_dir="$package_dir/sources"
+            package_name=$(basename "$package_dir")
+
+            if [ ! -d "$sources_dir" ]; then
+              echo "No sources found for $package_name"
+              continue
+            fi
+
+            vpk_dir="$sources_dir/pak01_dir"
+            vpk_file="$sources_dir/pak01_dir.vpk"
+
+            if [ -d "$vpk_dir" ]; then
+              echo "Creating pak01_dir.vpk for $package_name"
+              vpk -c "$vpk_dir" "$vpk_file"
+              rm -rf "$vpk_dir"
+            fi
+
+            echo "Creating package archive for $package_name"
+            archive_path="$package_dir/$package_name.tar"
+            tar -cf "$archive_path" -C "$sources_dir" .
+            xz -9e "$archive_path"
+
+          done
+
+      - name: Update latest release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: latest
+          name: "Package archives"
+          body: "This release contains the latest versions of all packages, archived and ready for use with Spplice."
+          draft: false
+          prerelease: false
+          files: packages/*/*.tar.xz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
