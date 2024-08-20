@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "concrete\Cracked_C"
+$bumpmap "concrete/cracked_c_n"
+}

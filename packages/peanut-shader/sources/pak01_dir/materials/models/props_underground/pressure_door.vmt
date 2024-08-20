@@ -1,0 +1,24 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/pressure_door"
+$bumpmap "models/props_underground/pressure_door_n"
+$surfaceprop default
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

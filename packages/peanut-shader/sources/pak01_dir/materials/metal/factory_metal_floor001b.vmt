@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "metal/factory_metal_floor001b"
+$surfaceprop metal
+$bumpmap "metal/factory_metal_floor001a_n"
+"%keywords" "portal2 bts"
+"%noportal" 1
+}

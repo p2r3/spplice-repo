@@ -1,0 +1,9 @@
+LightMappedGeneric
+{
+$basetexture "overlays/dirtartifacts01a"
+$surfaceprop default
+$translucent 1
+$decalscale 0.03125   //8x
+$decal 1
+"%keywords" portal2
+}

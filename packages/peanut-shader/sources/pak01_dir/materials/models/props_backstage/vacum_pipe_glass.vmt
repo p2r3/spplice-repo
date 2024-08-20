@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+	"$basetexture" "models/props_backstage/vacum_pipe_glass"
+	"$bumpmap" "models/props_backstage/vacum_pipe_glass_normal"
+
+	"$translucent" "1"
+	"$nocull" "1"
+
+	"$envmap" "env_cubemap"
+	"$envmapfresnel" "1"
+	"$envmaplightscale" "1"
+
+	"$phong" "1"
+	"$phongfresnelranges" "[0.3 0.6 4]"
+	"$halflambert" "1"
+	"$phongexponent" "50"
+
+	"$basemapalphaenvmapmask" "1"
+	"$invertphongmask" "1"
+}

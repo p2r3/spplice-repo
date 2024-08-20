@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+	$basetexture "models/props/metal_box_skin001_diffuse"
+	$bumpmap "models/props/metal_box_skin001_bumpmap"
+	$surfaceprop Metal
+
+	$phongexponenttexture	"models/props/metal_box_skin001_phongexponenttexture"
+	
+	$AmbientOcclusion 1
+	$AmbientOcclTexture "models/props/metal_box_skin001_ambientoccltexture"	
+
+	$phong 1
+	$phongalbedotint 1
+	$phongboost 1
+
+	
+
+	$selfillum 1
+	$selfillummask "models/props/clean_selfillum"
+}

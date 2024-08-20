@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/npcs/personality_sphere/personality_sphere"
+$bumpmap "models/npcs/personality_sphere/personality_sphere_n"
+}

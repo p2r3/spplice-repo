@@ -1,0 +1,35 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal001b"
+$surfaceprop default
+"%noportal" 1
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+
+$envmap env_cubemap
+$envmaptint "[.125 .125 .125]"
+$envmapsaturation .5
+$bumpmap "metal/underground_wall_metal002a-height-ssbump"
+"%keywords" "portal2 underground"
+
+                "$texscale"	4
+	"$bumpscale"         4
+	"$baseTextureOffset" "[0.5 0.5]"
+	"$bumpTextureOffset" "[0.5 0.5]"
+	"Proxies"
+     	{
+       "TextureTransform"
+            {
+		   			"translateVar" "$baseTextureOffset"
+		   			"scaleVar"     "$texscale"
+       			"resultVar"    "$baseTextureTransform"
+            }
+     	       "TextureTransform"
+            {
+		   			"translateVar" "$bumpTextureOffset"
+		   			"scaleVar"     "$bumpscale"
+       			"resultVar"    "$bumptransform"
+            }
+   
+     	}
+
+}

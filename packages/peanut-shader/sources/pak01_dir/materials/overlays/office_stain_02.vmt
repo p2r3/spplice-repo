@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "overlays/office_stain_02"
+$surfaceprop default
+$translucent 1
+$decalscale 0.03125   //8x
+$decal 1
+}

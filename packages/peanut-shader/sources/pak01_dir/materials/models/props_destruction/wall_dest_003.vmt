@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/wall_dest_003"
+$bumpmap "models/props_destruction/wall_dest_003_n"
+$surfaceprop default
+}

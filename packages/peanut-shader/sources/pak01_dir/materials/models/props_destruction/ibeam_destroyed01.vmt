@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/ibeam_destroyed01"
+$bumpmap "models/props_destruction/ibeam_destroyed01_n"
+$surfaceprop default
+}

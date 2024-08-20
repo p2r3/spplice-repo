@@ -46,6 +46,15 @@
       "icon": "https://p2r3.github.io/spplice-repo/packages/unhinged/icon.jpg"
     },
     {
+      "title": "Peanut Shader",
+      "author": "PieyIsAPie",
+      "description": "The most pretty decent way to replay your favorite game! Or if you are a new player, still a pretty good way to play it! No matter what, it is still a pretty good shader!\nMade by PieyIsAPie\nPlaytested by nikolan and PieyIsAPie",
+      "version": "1.0.0",
+      "args": [],
+      "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/peanut-shader.tar.xz",
+      "icon": "https://p2r3.github.io/spplice-repo/packages/peanut-shader/icon.jpg"
+    },
+    {
       "title": "Offset Mod",
       "author": "PortalRunner",
       "description": "You can create an anchor point, move any distance away from it, and then use that offset on a different position. In simpler terms, you can pocket your movement for later.\n\nUse your co-op ping bind to create and apply offsets.",

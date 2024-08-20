@@ -1,0 +1,25 @@
+LightmappedGeneric
+{
+$basetexture "concrete\concrete_bts_floor002a"
+$bumpmap "concrete\concrete_bts_floor002a_n"
+$surfaceprop concrete
+"%keywords" portal
+"%noportal" 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

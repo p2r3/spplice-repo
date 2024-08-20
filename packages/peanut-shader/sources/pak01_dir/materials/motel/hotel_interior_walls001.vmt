@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "motel/hotel_interior_walls001"
+$surfaceprop default
+$bumpmap "motel/hotel_interior_walls001_n"
+}

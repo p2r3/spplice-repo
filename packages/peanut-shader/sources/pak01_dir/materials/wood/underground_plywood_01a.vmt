@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "wood/underground_plywood_01a"
+$bumpmap "wood/underground_plywood_01a_n"
+$surfaceprop wood
+"%noportal" 1
+"%keywords" "portal2 underground"
+}

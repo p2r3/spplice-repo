@@ -1,0 +1,30 @@
+LightmappedGeneric
+{
+$basetexture "Concrete/observationwall_001a"
+$surfaceprop concrete
+"%keywords" portal
+LightmappedGeneric_HDR_DX9
+{
+$bumpmap "concrete/observationwall_001a_n"
+$detail "detail\detail_concrete_01"
+$detailscale 3
+$detailblendfactor .5
+$detailblendmode 0
+}
+LightmappedGeneric_DX9
+{
+$bumpmap "concrete/observationwall_001a_n"
+$detail "detail\detail_concrete_01"
+$detailscale 3
+$detailblendfactor .5
+$detailblendmode 0
+}
+LightmappedGeneric_DX8
+{
+$bumpmap "Concrete/observationwall_001a_n"
+}
+LightmappedGeneric_NoBump_DX8
+{
+$basetexture "Concrete/observationwall_001a"
+}
+}

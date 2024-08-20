@@ -1,0 +1,12 @@
+LightmappedGeneric
+{
+$basetexture "Concrete/observationwall_001b"
+$bumpmap "Concrete/observationwall_001b_n"
+$surfaceprop concrete
+
+
+
+
+
+"%keywords" portal2
+}

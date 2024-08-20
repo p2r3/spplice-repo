@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/sabotage/bird_nest"
+$bumpmap "models/sabotage/bird_nest_n"
+}

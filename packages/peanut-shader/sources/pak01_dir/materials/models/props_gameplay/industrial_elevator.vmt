@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_gameplay/industrial_elevator"
+$bumpmap "Models/props_gameplay/industrial_elevator_normal"
+}

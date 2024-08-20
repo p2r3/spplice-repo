@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "nature/dirtfloor004b"
+$bumpmap "nature/dirtfloor004b_n"
+$surfaceprop default
+"%keywords" "portal2 destruction"
+}

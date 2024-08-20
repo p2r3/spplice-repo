@@ -1,0 +1,30 @@
+LightmappedGeneric
+{
+$basetexture "Metal/metalwall_bts_006a"
+$bumpmap "Metal/metalwall_bts_006a_n"
+"%keywords" "portal2 bts destruction"
+$surfaceprop metal
+"%noportal" 1
+
+                "$texscale"	4
+	"$bumpscale"         4
+	"$baseTextureOffset" "[0.5 0.5]"
+	"$bumpTextureOffset" "[0.5 0.5]"
+	"Proxies"
+     	{
+       "TextureTransform"
+            {
+		   			"translateVar" "$baseTextureOffset"
+		   			"scaleVar"     "$texscale"
+       			"resultVar"    "$baseTextureTransform"
+            }
+     	       "TextureTransform"
+            {
+		   			"translateVar" "$bumpTextureOffset"
+		   			"scaleVar"     "$bumpscale"
+       			"resultVar"    "$bumptransform"
+            }
+   
+     	}
+
+}

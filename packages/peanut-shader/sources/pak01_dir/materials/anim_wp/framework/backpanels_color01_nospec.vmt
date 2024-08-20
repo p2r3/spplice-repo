@@ -1,0 +1,33 @@
+LightMappedGeneric
+{
+$basetexture "anim_wp/framework/backpanels_color01"
+$bumpmap "anim_wp/framework/backpanels_color01_height-ssbump"
+$ssbump 1
+$SSBumpMathFix 1
+"%keywords" "portal2 bts destruction"
+$surfaceprop metal
+"%noportal" 1
+$reflectivity "[ .3 .3 .3 ]" 
+
+                "$texscale"	4
+	"$bumpscale"         4
+	"$baseTextureOffset" "[0.5 0.5]"
+	"$bumpTextureOffset" "[0.5 0.5]"
+	"Proxies"
+     	{
+       "TextureTransform"
+            {
+		   			"translateVar" "$baseTextureOffset"
+		   			"scaleVar"     "$texscale"
+       			"resultVar"    "$baseTextureTransform"
+            }
+     	       "TextureTransform"
+            {
+		   			"translateVar" "$bumpTextureOffset"
+		   			"scaleVar"     "$bumpscale"
+       			"resultVar"    "$bumptransform"
+            }
+   
+     	}
+
+}

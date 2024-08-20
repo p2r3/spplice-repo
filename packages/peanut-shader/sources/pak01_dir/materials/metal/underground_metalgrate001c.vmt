@@ -1,0 +1,23 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_metalgrate001c"
+$surfaceprop default
+
+$alphatest 1
+$alphatestreference .5
+"%noportal" 1
+"%nopaint" 1
+"%compilepassbullets" 1
+
+"$texscale"	4
+"$baseTextureOffset" "[0.5 0.5]"
+"Proxies"
+{
+"TextureTransform"
+{
+"translateVar" "$baseTextureOffset"
+"scaleVar"     "$texscale"
+"resultVar"    "$baseTextureTransform"
+}
+
+}

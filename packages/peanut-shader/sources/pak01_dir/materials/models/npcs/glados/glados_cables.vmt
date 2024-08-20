@@ -1,0 +1,6 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\glados\glados_cables"
+$bumpmap "models\npcs\glados\glados_cables_normal"
+$selfillum 1
+}

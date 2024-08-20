@@ -1,0 +1,20 @@
+LightmappedGeneric
+{
+$basetexture "anim_wp\framework\backpanels"
+"%keywords" "portal2 bts destruction"
+$surfaceprop metal
+"%noportal" 1
+$reflectivity "[ .3 .3 .3 ]" 
+
+                "$texscale"	4
+	"$baseTextureOffset" "[0.5 0.5]"
+	"Proxies"
+     	{
+       "TextureTransform"
+            {
+		   			"translateVar" "$baseTextureOffset"
+		   			"scaleVar"     "$texscale"
+       			"resultVar"    "$baseTextureTransform"
+            }
+
+}
