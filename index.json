@@ -7,7 +7,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/airportals.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/airportals/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/airportals/icon.jpg"
     },
     {
       "title": "Rockets Made Possible",
@@ -16,7 +16,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/rockets-possible.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/rockets-possible/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/rockets-possible/icon.jpg"
     },
     {
       "title": "Odyssey Mod",
@@ -25,7 +25,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/odyssey.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/odyssey/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/odyssey/icon.jpg"
     },
     {
       "title": "Reverse Mod",
@@ -34,7 +34,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/reverse.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/reverse/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/reverse/icon.jpg"
     },
     {
       "title": "Gravity Redirect",
@@ -43,7 +43,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/unhinged.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/unhinged/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/unhinged/icon.jpg"
     },
     {
       "title": "Offset Mod",
@@ -52,7 +52,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/offsetmod.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/offsetmod/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/offsetmod/icon.jpg"
     },
     {
       "title": "Vacuum Portals",
@@ -61,7 +61,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/vacuum.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/vacuum/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/vacuum/icon.jpg"
     },
     {
       "title": "Infinite Portals",
@@ -70,7 +70,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/multiportal.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/multiportal/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/multiportal/icon.jpg"
     },
     {
       "title": "Random Maps",
@@ -79,7 +79,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/random.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/random/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/random/icon.jpg"
     },
     {
       "title": "Sonic Portals",
@@ -88,7 +88,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/sonic-portals.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/sonic-portals/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/sonic-portals/icon.jpg"
     },
     {
       "title": "Everything Swapped",
@@ -97,7 +97,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/allswap.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/allswap/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/allswap/icon.jpg"
     },
     {
       "title": "Prop Swap",
@@ -106,7 +106,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/propswap.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/propswap/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/propswap/icon.jpg"
     },
     {
       "title": "Magnetic Portals",
@@ -115,7 +115,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/magnets.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/magnets/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/magnets/icon.jpg"
     },
     {
       "title": "Rocket Launcher",
@@ -124,7 +124,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/rockets.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/rockets/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/rockets/icon.jpg"
     },
     {
       "title": "Backpack Mod",
@@ -133,7 +133,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/backpack.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/backpack/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/backpack/icon.jpg"
     },
     {
       "title": "Liquid Lasers",
@@ -142,7 +142,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/liquid-lasers.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/liquid-lasers/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/liquid-lasers/icon.jpg"
     },
     {
       "title": "DeathBox",
@@ -151,7 +151,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/deathbox.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/deathbox/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/deathbox/icon.jpg"
     },
     {
       "title": "Wormhole Balance",
@@ -160,7 +160,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/quantum.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/quantum/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/quantum/icon.jpg"
     },
     {
       "title": "Floor is Lava",
@@ -169,7 +169,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/floorislava.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/floorislava/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/floorislava/icon.jpg"
     },
     {
       "title": "Magnet Balance",
@@ -178,7 +178,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/quantum-magnets.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/quantum-magnets/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/quantum-magnets/icon.jpg"
     },
     {
       "title": "Cold Potato",
@@ -187,7 +187,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/holdmod.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/holdmod/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/holdmod/icon.jpg"
     },
     {
       "title": "Portal 2: Grapple Gun",
@@ -196,7 +196,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/grapple.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/grapple/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/grapple/icon.jpg"
     },
     {
       "title": "Portal 2: Grapple Gun - No Altered Maps",
@@ -205,7 +205,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/grapple-alt.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/grapple-alt/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/grapple-alt/icon.jpg"
     },
     {
       "title": "Maxwell The Companion Cat",
@@ -214,7 +214,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/maxwell.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/maxwell/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/maxwell/icon.jpg"
     }
   ]
 }
