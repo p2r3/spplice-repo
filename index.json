@@ -52,7 +52,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/peanut-shader.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/packages/peanut-shader/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/peanut-shader/icon.png"
     },
     {
       "title": "Offset Mod",
@@ -142,7 +142,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/backpack.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/packages/backpack/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/backpack/icon.png"
     },
     {
       "title": "Liquid Lasers",
@@ -223,7 +223,7 @@
       "version": "1.0.0",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/maxwell.tar.xz",
-      "icon": "https://p2r3.github.io/spplice-repo/packages/maxwell/icon.jpg"
+      "icon": "https://p2r3.github.io/spplice-repo/packages/maxwell/icon.png"
     }
   ]
 }
