@@ -112,7 +112,7 @@
       "title": "Randomized Testing Initiative",
       "author": "PortalRunner",
       "description": "Play an endless queue of truly random maps from the Steam workshop. Verifiably impossible puzzles are excluded (e.g. disconnected exit, cube button with no cube, etc.).\n\nThe Epochtal API (epochtal.p2r3.com) is used for these queries. Your account's SteamID and up to 2 played maps may be stored on the server as part of the \"Continue\" feature. No other data processing takes place, and your data will not be used for purposes outside of this feature. This data may be cleared from the server at any point. By using this package, you agree to these terms.",
-      "version": "1.1.9",
+      "version": "1.1.10",
       "args": [],
       "file": "https://github.com/p2r3/spplice-repo/releases/download/latest/random-workshop.tar.xz",
       "icon": "https://p2r3.github.io/spplice-repo/packages/random-workshop/icon.png"

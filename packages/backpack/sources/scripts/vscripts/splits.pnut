@@ -101,7 +101,7 @@ splits.onSetup <- function (setupDone) {
     bcon(`sar_speedrun_cc_rule "${name}" entity targetname=${targetname} inputname=${input}`);
   }
 
-  // Start and stop rules remain the same on (almost) every PTI map
+  // Start and stop rules remain the same on (almost) every PeTI map
   actionRule("Start", "load", "force_start");
   actionRule("Stop", "entity targetname=@relay_pti_level_end inputname=Trigger", "stop");
 
@@ -118,7 +118,7 @@ splits.onSetup <- function (setupDone) {
       firstDoor = ent;
     }
 
-    // Check for nearby world portals to avoid duplicate doors (most PTI maps use these)
+    // Check for nearby world portals to avoid duplicate doors (most PeTI maps use these)
     let wportal = Entities.FindByClassnameNearest("linked_portal_door", ent.GetCenter(), 512);
 
     if (wportal) {
@@ -169,7 +169,7 @@ splits.onSetup <- function (setupDone) {
   }
 
   // Find first world portal at first chamber door, set that as new reference position
-  // Most PTI and BEEMod maps use this and it messes with the order of automatic splits
+  // Most PeTI and BEEmod maps use this and it messes with the order of automatic splits
   if (firstDoor) {
 
     let firstPortal = Entities.FindByClassnameNearest("linked_portal_door", firstDoor.GetCenter(), 512);
