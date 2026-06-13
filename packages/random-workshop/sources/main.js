@@ -97,6 +97,8 @@ var nextMap = "";
 var consoleTick = 0;
 // Store the last partially received line until it can be processed
 var lastLine = "";
+// Whether to permit making saves at the start of the next load
+var makeStartSaves = false;
 
 /**
  * Processes output from the Portal 2 console
@@ -136,6 +138,7 @@ function processConsoleOutput () {
       const finishedMapURL = currentMapURL || getLastPlayedMapURL();
       if (finishedMapURL) sendToConsole(gameSocket, 'echo "Previous map\'s URL: ' + finishedMapURL + '";echo;echo');
       // Start a cached map if available, download a new one otherwise
+      makeStartSaves = true;
       startMap(nextMap ? nextMap : forceRandomMap(false));
       // Precache the next random map
       sleep(200);
@@ -150,6 +153,7 @@ function processConsoleOutput () {
       // If the primary map is not available, display error and exit early
       if (!paths[0]) return sendToConsole(gameSocket, 'disconnect "No previous map queries found."');
       // Start primary map, store next map
+      makeStartSaves = false;
       startMap(paths[0]);
       nextMap = paths[1];
       return;
@@ -168,6 +172,20 @@ function processConsoleOutput () {
           if (!prevSteamID) return sendToConsole(gameSocket, 'map SP_A5_CREDITS');
         }
       } catch (e) { }
+      return;
+    }
+
+    // Process request for creating save files on map start to prevent users
+    // from accidentally loading into a different map, and to help them load
+    // back into the current map if they do.
+    if (makeStartSaves && line.indexOf("elMakeSaves") === 0) {
+      makeStartSaves = false;
+      sendToConsole(gameSocket, "save quick");
+      sendToConsole(gameSocket, "save autosave");
+      // Make second batch (e.g., quick01) after 1 second
+      sleep(1000);
+      sendToConsole(gameSocket, "save quick");
+      sendToConsole(gameSocket, "save autosave");
       return;
     }
 

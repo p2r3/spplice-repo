@@ -110,6 +110,9 @@ if (!("Entities" in this)) return;
     scope["Inputdisplay"] <- scope["InputDisplay"];
   }
 
+  // Create saves as soon as the run starts
+  EntFire("worldspawn", "RunScriptCode", "printl(\"elMakeSaves\")", 0.1);
+
 };
 
 ::__elFinishLock <- false;
