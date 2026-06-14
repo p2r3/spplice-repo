@@ -182,10 +182,6 @@ function processConsoleOutput () {
       makeStartSaves = false;
       sendToConsole(gameSocket, "save quick");
       sendToConsole(gameSocket, "save autosave");
-      // Make second batch (e.g., quick01) after 1 second
-      sleep(1000);
-      sendToConsole(gameSocket, "save quick");
-      sendToConsole(gameSocket, "save autosave");
       return;
     }
 
