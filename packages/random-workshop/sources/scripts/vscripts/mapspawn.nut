@@ -113,6 +113,9 @@ if (!("Entities" in this)) return;
   // Create saves one second after the run starts
   EntFire("worldspawn", "RunScriptCode", "printl(\"elMakeSaves\")", 1.0);
 
+  // Fix any residual custom sounds
+  SendToConsole("sv_soundemitter_flush");
+
 };
 
 ::__elFinishLock <- false;
