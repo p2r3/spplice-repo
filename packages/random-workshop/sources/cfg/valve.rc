@@ -13,7 +13,3 @@ stuffcmds
 
 // display the startup level
 startupmenu
-
-// Reset autorecord behavior for srconfigs users
-// Prevents some weird save-load issues
-cond ?__srconfigs=1 sar_on_load sar_autorecord -1
