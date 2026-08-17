@@ -5,13 +5,13 @@
 		"title"		"New Game"
 		"subtitle"	"Fetches a completely random map"
 		"pic"		"vgui/chapters/chapter8"
-		"command"	"map_background SP_A5_CREDITS;echo Fetching a random map..."
+		"command"	"map_background SP_A5_CREDITS;echo;echo Fetching a random map..."
 	}
   "continue"
 	{
 		"title"		"Continue"
 		"subtitle"	"Continues from the map you last played"
 		"pic"		"vgui/chapters/chapter9"
-		"command"	"map_background SP_A5_CREDITS;echo Fetching last played map..."
+		"command"	"map_background SP_A5_CREDITS;echo;echo Fetching last played map..."
 	}
 }

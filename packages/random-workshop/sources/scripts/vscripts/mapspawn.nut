@@ -44,7 +44,7 @@ if (!("Entities" in this)) return;
     GetMapName().tolower() == "mp_coop_lobby_3" ||
     GetMapName().tolower() == "mp_coop_start"
   ) {
-    SendToConsole("say Starting co-op RTI session...");
+    SendToConsole("say \" Starting co-op RTI session...\"");
     return;
   }
 
@@ -138,7 +138,7 @@ if (!("Entities" in this)) return;
   if (IsMultiplayer()) {
     // This command isn't permitted to run from scripts in co-op,
     // so we signal to Spplice to run it for both clients.
-    SendToConsole("say Running sv_soundemitter_flush...");
+    SendToConsole("say \" Running sv_soundemitter_flush...\"");
   } else {
     SendToConsole("sv_soundemitter_flush");
   }

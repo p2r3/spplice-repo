@@ -140,7 +140,7 @@ function processConsoleOutput () {
   lines.forEach(function (line) {
 
     // Process request for a new random map
-    if (line.indexOf("Fetching a random map...") !== -1) {
+    if (line.indexOf("Fetching a random map...") === 0) {
       // This is a singleplayer request - clear co-op partner
       steamidPartner = "";
       // Print the URL for the last map played (fall back to server query if not stored here)
@@ -164,12 +164,12 @@ function processConsoleOutput () {
       if (!getWorkshopperJson(true)[0]) {
         forceRandomMap(false);
       }
-      sendToConsole(gameSocket, "say Fetching a random co-op map...");
+      sendToConsole(gameSocket, 'say " Fetching a random co-op map..."');
       return;
     }
 
     // Process request for a new random co-op map
-    if (line.indexOf("Fetching a random co-op map...") !== -1) {
+    if (line.indexOf(":  Fetching a random co-op map...") !== -1 && line.split(":").length === 2) {
       // Exit early if we're already fetching a map
       if (fetchingCoopMap) return;
       fetchingCoopMap = true;
@@ -188,7 +188,7 @@ function processConsoleOutput () {
     }
 
     // Process request for continuing from last map
-    if (line.indexOf("Fetching last played map...") !== -1) {
+    if (line.indexOf("Fetching last played map...") === 0) {
       // This is a singleplayer request - clear co-op partner
       steamidPartner = "";
       // Get player's previously fetched maps
@@ -229,7 +229,7 @@ function processConsoleOutput () {
     }
 
     // Handle flushing soundemitter in co-op
-    if (line.indexOf("Running sv_soundemitter_flush...") !== -1) {
+    if (line.indexOf(":  Running sv_soundemitter_flush...") !== -1 && line.split(":").length === 2) {
       sendToConsole(gameSocket, "sv_soundemitter_flush");
       return;
     }
@@ -242,17 +242,17 @@ function processConsoleOutput () {
      * a command that will only execute if they're the host. This command
      * then fetches a random map and begins gameplay.
      */
-    if (line.indexOf(": Starting co-op RTI session...") !== -1) {
+    if (line.indexOf(":  Starting co-op RTI session...") !== -1 && line.split(":").length === 2) {
       if (startingCoopSession) return;
       startingCoopSession = true;
       if (!steamid) {
         sendToConsole(gameSocket, 'disconnect "Failed to obtain your SteamID. Try loading a save in singleplayer, then try again."');
         return;
       }
-      sendToConsole(gameSocket, "say My SteamID is " + steamid);
+      sendToConsole(gameSocket, 'say " My SteamID is ' + steamid + '"');
       return;
     }
-    if (line.indexOf(": My SteamID is ") !== -1) {
+    if (line.indexOf(":  My SteamID is ") !== -1 && line.split(":").length === 2) {
       startingCoopSession = false;
       const extracted = line.slice(line.indexOf(": My SteamID is ") + 16).trim();
       // Ignore our own SteamID
@@ -269,13 +269,13 @@ function processConsoleOutput () {
     }
 
     // Handle acknowledgement from partner to start the next map
-    if (steamidPartner && line.indexOf(": Player [" + steamidPartner + "] is ready!") !== -1) {
+    if (steamidPartner && line.indexOf(":  Player [" + steamidPartner + "] is ready!") !== -1 && line.split(":").length === 2) {
       partnerReadyForNextMap = true;
       if (meReadyForNextMap) startMap(nextMap, true);
       return;
     }
 
-    if (line.indexOf("Redownloading all lightmaps") !== -1) {
+    if (line.indexOf("Redownloading all lightmaps") === 0) {
       startingCoopSession = false;
       fetchingCoopMap = false;
       return;
@@ -301,7 +301,7 @@ function startMap (data, coop) {
   // In co-op, first verify that our partner also has the map
   if (coop) {
     if (!meReadyForNextMap) {
-      sendToConsole(gameSocket, "say Player [" + steamid + "] is ready!");
+      sendToConsole(gameSocket, 'say " Player [' + steamid + '] is ready!"');
       meReadyForNextMap = true;
     }
     if (partnerReadyForNextMap) {
