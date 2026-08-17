@@ -22,6 +22,28 @@
 		"fieldName"					"BtnExtras"
 		"xpos"						"88"	[$WIN32WIDE]
 		"xpos"						"63"	[!$WIN32WIDE]
+		"ypos"						"228"
+		"wide"						"280"
+		"tall"						"20"
+		"autoResize"				"1"
+		"pinCorner"					"0"
+		"visible"					"1"
+		"enabled"					"1"
+		"tabPosition"				"0"
+		"navUp"					"BtnQuit"
+		"navDown"					"BtnCoOp"
+		"labelText"					"PLAY SINGLE PLAYER"
+		"style"					"MainMenuButton"
+		"command"					"Extras"
+		"ActivationType"			"1"
+	}
+
+	"BtnCoOp"
+	{
+		"ControlName"				"BaseModHybridButton"
+		"fieldName"					"BtnCoOp"
+		"xpos"						"88"	[$WIN32WIDE]
+		"xpos"						"63"	[!$WIN32WIDE]
 		"ypos"						"258"
 		"wide"						"280"
 		"tall"						"20"
@@ -30,11 +52,11 @@
 		"visible"					"1"
 		"enabled"					"1"
 		"tabPosition"				"0"
-		"navUp"						"BtnQuit"
+		"navUp"					"BtnExtras"
 		"navDown"					"BtnOptions"
-		"labelText"					"PLAY RANDOM MAPS"
-		"style"						"MainMenuButton"
-		"command"					"Extras"
+		"labelText"					"PLAY COOPERATIVE"
+		"style"					"MainMenuButton"
+		"command"					"CoopPlay"
 		"ActivationType"			"1"
 	}
 
@@ -52,7 +74,7 @@
 		"visible"					"1"
 		"enabled"					"1"
 		"tabPosition"				"0"
-		"navUp"						"BtnExtras"
+		"navUp"						"BtnCoOp"
 		"navDown"					"BtnQuit"
 		"labelText"					"#PORTAL2_MainMenu_Options"
 		"style"						"MainMenuButton"

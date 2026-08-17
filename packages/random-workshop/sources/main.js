@@ -91,14 +91,21 @@ function processVersionCheck () {
 var steamid = "";
 // URL for the last played map
 var currentMapURL = "";
-// File path for the next precached map
-var nextMap = "";
+// Next precached map in form { path, url }
+var nextMap = null;
 // Counter for calls of processConsoleOutput
 var consoleTick = 0;
 // Store the last partially received line until it can be processed
 var lastLine = "";
 // Whether to permit making saves at the start of the next load
 var makeStartSaves = false;
+// Co-op partner's SteamID, set only if playing co-op
+var steamidPartner = "";
+// Whether I and/or my partner have fetched the next map
+var meReadyForNextMap = false, partnerReadyForNextMap = false;
+// If true, disables additional requests to prevent concurrent queries
+var fetchingCoopMap = false;
+var startingCoopSession = false;
 
 /**
  * Processes output from the Portal 2 console
@@ -134,27 +141,59 @@ function processConsoleOutput () {
 
     // Process request for a new random map
     if (line.indexOf("Fetching a random map...") !== -1) {
+      // This is a singleplayer request - clear co-op partner
+      steamidPartner = "";
       // Print the URL for the last map played (fall back to server query if not stored here)
       const finishedMapURL = currentMapURL || getLastPlayedMapURL();
       if (finishedMapURL) sendToConsole(gameSocket, 'echo "Previous map\'s URL: ' + finishedMapURL + '";echo;echo');
       // Start a cached map if available, download a new one otherwise
       makeStartSaves = true;
-      startMap(nextMap ? nextMap : forceRandomMap(false));
+      startMap(nextMap ? nextMap : forceRandomMap(false), false);
       // Precache the next random map
       sleep(200);
       nextMap = forceRandomMap(false);
       return;
     }
 
+    // Process request to load next co-op map as host
+    if (line.indexOf("You are the host. Initiating map request...") === 0) {
+      // The host loads the next map, but *does not start it*.
+      // Both players then start the "previous" map once they're ready.
+      forceRandomMap(false);
+      sendToConsole(gameSocket, "say Fetching a random co-op map...");
+      return;
+    }
+
+    // Process request for a new random co-op map
+    if (line.indexOf("Fetching a random co-op map...") !== -1) {
+      // Exit early if we're already fetching a map
+      if (fetchingCoopMap) return;
+      fetchingCoopMap = true;
+      // Pause the speedrun timer during the load
+      // Normally, we'd pause the game, but that doesn't work in co-op
+      sendToConsole(gameSocket, "sar_speedrun_pause");
+      // Clear player ready states from last map
+      meReadyForNextMap = false, partnerReadyForNextMap = false;
+      // Print the URL for the last map played (fall back to server query if not stored here)
+      const finishedMapURL = currentMapURL || getLastPlayedMapURL();
+      if (finishedMapURL) sendToConsole(gameSocket, 'echo "Previous map\'s URL: ' + finishedMapURL + '";echo;echo');
+      // Fetch the "previous" map - the host will have updated it
+      nextMap = forceRandomMap(true)[0];
+      startMap(nextMap, true);
+      return;
+    }
+
     // Process request for continuing from last map
     if (line.indexOf("Fetching last played map...") !== -1) {
+      // This is a singleplayer request - clear co-op partner
+      steamidPartner = "";
       // Get player's previously fetched maps
       const paths = forceRandomMap(true);
       // If the primary map is not available, display error and exit early
       if (!paths[0]) return sendToConsole(gameSocket, 'disconnect "No previous map queries found."');
       // Start primary map, store next map
       makeStartSaves = false;
-      startMap(paths[0]);
+      startMap(paths[0], false);
       nextMap = paths[1];
       return;
     }
@@ -167,7 +206,7 @@ function processConsoleOutput () {
           // If this is our first time getting the SteamID, load special map
           // The VScript will drop the player out to the menu
           const prevSteamID = steamid;
-          steamid = extracted;
+          steamid = extracted.trim();
           sleep(200);
           if (!prevSteamID) return sendToConsole(gameSocket, 'map SP_A5_CREDITS');
         }
@@ -185,6 +224,59 @@ function processConsoleOutput () {
       return;
     }
 
+    // Handle flushing soundemitter in co-op
+    if (line.indexOf("Running sv_soundemitter_flush...") !== -1) {
+      sendToConsole(gameSocket, "sv_soundemitter_flush");
+      return;
+    }
+
+    /**
+     * Handle handshake of co-op session:
+     *
+     * Both players send each other their SteamIDs. Once a player receives
+     * an ID that isn't theirs (so, their partner's), they save it and run
+     * a command that will only execute if they're the host. This command
+     * then fetches a random map and begins gameplay.
+     */
+    if (line.indexOf(": Starting co-op RTI session...") !== -1) {
+      if (startingCoopSession) return;
+      startingCoopSession = true;
+      if (!steamid) {
+        sendToConsole(gameSocket, 'disconnect "Failed to obtain your SteamID. Try loading a save in singleplayer, then try again."');
+        return;
+      }
+      sendToConsole(gameSocket, "say My SteamID is " + steamid);
+      return;
+    }
+    if (line.indexOf(": My SteamID is ") !== -1) {
+      startingCoopSession = false;
+      const extracted = line.slice(line.indexOf(": My SteamID is ") + 16).trim();
+      // Ignore our own SteamID
+      if (extracted === steamid) return;
+      if (!extracted) {
+        sendToConsole(gameSocket, 'disconnect "Failed to parse partner\'s SteamID."');
+        return;
+      }
+      steamidPartner = extracted;
+      // Since this is a `script` command, it'll only run on the host's end
+      // This will finish the "handshake" and start loading a map
+      sendToConsole(gameSocket, 'script ::__elFinish()');
+      return;
+    }
+
+    // Handle acknowledgement from partner to start the next map
+    if (steamidPartner && line.indexOf(": Ready for next map (" + steamidPartner + ")") !== -1) {
+      partnerReadyForNextMap = true;
+      if (meReadyForNextMap) startMap(nextMap, true);
+      return;
+    }
+
+    if (line.indexOf("Redownloading all lightmaps") !== -1) {
+      startingCoopSession = false;
+      fetchingCoopMap = false;
+      return;
+    }
+
   });
 
   // Store the last entry of the array as a partially received line
@@ -193,7 +285,7 @@ function processConsoleOutput () {
 }
 
 // Starts a map from the given path
-function startMap (data) {
+function startMap (data, coop) {
   // Reset persistent cvars
   sendToConsole(gameSocket, "sv_allow_mobile_portals 0");
   sendToConsole(gameSocket, "map_wants_save_disable 0");
@@ -201,7 +293,20 @@ function startMap (data) {
   sendToConsole(gameSocket, "sv_cheats 0");
   // Set and load next map
   currentMapURL = data.url;
-  return sendToConsole(gameSocket, 'disconnect;map "' + data.path + '"');
+  // In single-player, just launch the map right away
+  // In co-op, first verify that our partner also has the map
+  if (coop) {
+    if (!meReadyForNextMap) {
+      sendToConsole(gameSocket, "say Ready for next map (" + steamid + ")");
+      meReadyForNextMap = true;
+    }
+    if (partnerReadyForNextMap) {
+      // This will only go through if we're the host
+      sendToConsole(gameSocket, 'script SendToConsole("select_map \\"' + data.path + '\\"")');
+    }
+  } else {
+    return sendToConsole(gameSocket, 'disconnect;map "' + data.path + '"');
+  }
 }
 
 /**
@@ -210,7 +315,14 @@ function startMap (data) {
  */
 function getWorkshopperJson (previous) {
   const endpoint = previous ? "randomsource" : "random";
-  const json = download.string(HTTP_ADDRESS + "/api/workshopper/" + endpoint + '/"' + steamid + '"');
+  // For SP games, just use the client's SteamID.
+  // For co-op, use string "<smallest ID>+<biggest ID>".
+  const steamidString = steamidPartner ?
+    (steamid < steamidPartner ?
+      (steamid + "+" + steamidPartner) : (steamidPartner + "+" + steamid)
+    ) : steamid;
+  console.log(HTTP_ADDRESS + "/api/workshopper/" + endpoint + '/"' + steamidString + '"');
+  const json = download.string(HTTP_ADDRESS + "/api/workshopper/" + endpoint + '/"' + steamidString + '"');
   return JSON.parse(json);
 }
 

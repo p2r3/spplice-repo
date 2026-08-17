@@ -15,10 +15,17 @@ if (!("Entities" in this)) return;
 ::__elFirstInit <- function () {
   ::__elInitFlag <- true;
 
-  // Wait for the player to become available by recursing with a delay
-  if (!GetPlayer()) {
-    EntFireByHandle(Entities.First(), "RunScriptCode", "::__elFirstInit()", FrameTime(), null, null);
-    return;
+  // Wait for the player(s) to become available by recursing with a delay
+  if (IsMultiplayer()) {
+    if (!Entities.FindByClassname(Entities.FindByClassname(null, "player"), "player")) {
+      EntFireByHandle(Entities.First(), "RunScriptCode", "::__elFirstInit()", 0.2, null, null);
+      return;
+    }
+  } else {
+    if (!GetPlayer()) {
+      EntFireByHandle(Entities.First(), "RunScriptCode", "::__elFirstInit()", FrameTime(), null, null);
+      return;
+    }
   }
 
   // The uppercase credits map is used as a way to return to a functioning menu
@@ -28,6 +35,16 @@ if (!("Entities" in this)) return;
     EntFire("logic_script", "Kill");
     EntFireByHandle(Entities.First(), "RunScriptCode", "SendToConsole(\"fadeout 0\")", FrameTime(), null, null);
     EntFireByHandle(Entities.First(), "RunScriptCode", "SendToConsole(\"disconnect\")", 1.0, null, null);
+    return;
+  }
+
+  // Detect co-op start, set up co-op session
+  if (
+    GetMapName().tolower() == "mp_coop_lobby_2" ||
+    GetMapName().tolower() == "mp_coop_lobby_3" ||
+    GetMapName().tolower() == "mp_coop_start"
+  ) {
+    SendToConsole("say Starting co-op RTI session...");
     return;
   }
 
@@ -113,10 +130,18 @@ if (!("Entities" in this)) return;
   }
 
   // Create saves one second after the run starts
-  EntFire("worldspawn", "RunScriptCode", "printl(\"elMakeSaves\")", 1.0);
+  if (!IsMultiplayer()) {
+    EntFire("worldspawn", "RunScriptCode", "printl(\"elMakeSaves\")", 1.0);
+  }
 
   // Fix any residual custom sounds
-  SendToConsole("sv_soundemitter_flush");
+  if (IsMultiplayer()) {
+    // This command isn't permitted to run from scripts in co-op,
+    // so we signal to Spplice to run it for both clients.
+    SendToConsole("say Running sv_soundemitter_flush...");
+  } else {
+    SendToConsole("sv_soundemitter_flush");
+  }
 
 };
 
@@ -127,10 +152,14 @@ if (!("Entities" in this)) return;
   ::__elFinish <- function () { };
   if (__elFinishLock) return;
   ::__elFinishLock <- true;
-  // Print this message as a signal to JS API that we need the next map
-  printl("\n\nFetching a random map...");
-  // Silently pause the game while the map is loaded
-  SendToConsole("setpause nomsg");
+  if (!IsMultiplayer()) {
+    // Print this message as a signal to JS API that we need the next map
+    printl("\n\nFetching a random map...");
+    // Silently pause the game while the map is loaded
+    SendToConsole("setpause nomsg");
+  } else {
+    printl("\n\nYou are the host. Initiating map request...");
+  }
 };
 
 // Run the entrypoint function as soon as entity I/O kicks in
