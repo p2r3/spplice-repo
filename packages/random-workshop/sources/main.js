@@ -160,6 +160,10 @@ function processConsoleOutput () {
       // The host loads the next map, but *does not start it*.
       // Both players then start the "previous" map once they're ready.
       forceRandomMap(false);
+      // Ensure both current and next map is prefilled to allow for caching
+      if (!getWorkshopperJson(true)[0]) {
+        forceRandomMap(false);
+      }
       sendToConsole(gameSocket, "say Fetching a random co-op map...");
       return;
     }
@@ -177,8 +181,8 @@ function processConsoleOutput () {
       // Print the URL for the last map played (fall back to server query if not stored here)
       const finishedMapURL = currentMapURL || getLastPlayedMapURL();
       if (finishedMapURL) sendToConsole(gameSocket, 'echo "Previous map\'s URL: ' + finishedMapURL + '";echo;echo');
-      // "Continue" from the "last played" map - the host will have updated it
-      nextMap = forceRandomMap(true)[1];
+      // Fetch the "previous" map - the host will have updated it
+      nextMap = forceRandomMap(true)[0];
       startMap(nextMap, true);
       return;
     }
@@ -377,6 +381,9 @@ function getRandomMap (previous) {
  * @returns {object} Downloaded map URL and path for use with "map" command
  */
 function downloadMap (data) {
+
+  // Exit early if no map data provided
+  if (data === null) return;
 
   // Construct workshop page URL
   const pageURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=" + data.publishedfileid;
