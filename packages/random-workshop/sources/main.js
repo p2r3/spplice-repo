@@ -177,8 +177,8 @@ function processConsoleOutput () {
       // Print the URL for the last map played (fall back to server query if not stored here)
       const finishedMapURL = currentMapURL || getLastPlayedMapURL();
       if (finishedMapURL) sendToConsole(gameSocket, 'echo "Previous map\'s URL: ' + finishedMapURL + '";echo;echo');
-      // Fetch the "previous" map - the host will have updated it
-      nextMap = forceRandomMap(true)[0];
+      // "Continue" from the "last played" map - the host will have updated it
+      nextMap = forceRandomMap(true)[1];
       startMap(nextMap, true);
       return;
     }
