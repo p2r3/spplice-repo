@@ -161,8 +161,9 @@ function processConsoleOutput () {
       // Both players then start the "previous" map once they're ready.
       forceRandomMap(false);
       // Ensure both current and next map is prefilled to allow for caching
-      if (!getWorkshopperJson(true)[0]) {
+      while (!getWorkshopperJson(true)[0]) {
         forceRandomMap(false);
+        sleep(500);
       }
       sendToConsole(gameSocket, 'say " Fetching a random co-op map..."');
       return;
