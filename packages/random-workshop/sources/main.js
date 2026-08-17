@@ -269,7 +269,7 @@ function processConsoleOutput () {
     }
 
     // Handle acknowledgement from partner to start the next map
-    if (steamidPartner && line.indexOf(": Ready for next map (" + steamidPartner + ")") !== -1) {
+    if (steamidPartner && line.indexOf(": Player [" + steamidPartner + "] is ready!") !== -1) {
       partnerReadyForNextMap = true;
       if (meReadyForNextMap) startMap(nextMap, true);
       return;
@@ -301,7 +301,7 @@ function startMap (data, coop) {
   // In co-op, first verify that our partner also has the map
   if (coop) {
     if (!meReadyForNextMap) {
-      sendToConsole(gameSocket, "say Ready for next map (" + steamid + ")");
+      sendToConsole(gameSocket, "say Player [" + steamid + "] is ready!");
       meReadyForNextMap = true;
     }
     if (partnerReadyForNextMap) {
