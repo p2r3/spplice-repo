@@ -255,7 +255,7 @@ function processConsoleOutput () {
     }
     if (line.indexOf(":  My SteamID is ") !== -1 && line.split(":").length === 2) {
       startingCoopSession = false;
-      const extracted = line.slice(line.indexOf(": My SteamID is ") + 16).trim();
+      const extracted = line.slice(line.indexOf(":  My SteamID is ") + 17).trim();
       // Ignore our own SteamID
       if (extracted === steamid) return;
       if (!extracted) {
