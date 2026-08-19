@@ -229,8 +229,8 @@ function processConsoleOutput () {
       return;
     }
 
-    // Handle flushing soundemitter in co-op
-    if (line.indexOf(":  Running sv_soundemitter_flush...") !== -1 && line.split(":").length === 2) {
+    // Handle map startup commands in co-op
+    if (line.indexOf(":  Starting map...") !== -1 && line.split(":").length === 2) {
       sendToConsole(gameSocket, "sv_soundemitter_flush");
       return;
     }
