@@ -143,6 +143,25 @@ if (!("Entities" in this)) return;
     SendToConsole("sv_soundemitter_flush");
   }
 
+  // Prevent restarting the map after finishing the level in co-op
+  if (IsMultiplayer()) {
+    local levelEndRelay = Entities.FindByName(null, "@relay_pti_level_end");
+    if (levelEndRelay) if (levelEndRelay.ValidateScriptScope()) {
+      local scope = levelEndRelay.GetScriptScope();
+      scope["InputTrigger"] <- function () {
+        ::__elFinish();
+        EntFire("point_clientcommand", "Kill");
+        EntFire("point_servercommand", "Kill");
+        EntFire("point_broadcastclientcommand", "Kill");
+        EntFire("point_changelevel", "Kill");
+        EntFire("trigger_changelevel", "Kill");
+        EntFire("trigger_transition", "Kill");
+        return false;
+      };
+      scope["Inputtrigger"] <- scope["InputTrigger"];
+    }
+  }
+
 };
 
 ::__elFinishLock <- false;
