@@ -1,40 +1,25 @@
+// Ensure we're running on the server's script scope
+if (!("Entities" in this)) return;
+IncludeScript("ppmod");
+
 // This print statement is found in the original mapspawn.nut file
 // There's no reason to keep it, other than to maintain normal console output
 printl("==== calling mapspawn.nut");
 
-// Ensure we're running on the server's script scope
-if (!("Entities" in this)) return;
-
-// The entrypoint function - called once entity I/O has initialized
-::__elInit <- function () {
-  if ("__elInitFlag" in this) return;
-  ::__elFirstInit();
-};
-
 // Called only once on the initial map load
-::__elFirstInit <- function () {
-  ::__elInitFlag <- true;
-
-  // Wait for the player(s) to become available by recursing with a delay
-  if (IsMultiplayer()) {
-    if (!Entities.FindByClassname(Entities.FindByClassname(null, "player"), "player")) {
-      EntFireByHandle(Entities.First(), "RunScriptCode", "::__elFirstInit()", 0.2, null, null);
-      return;
-    }
-  } else {
-    if (!GetPlayer()) {
-      EntFireByHandle(Entities.First(), "RunScriptCode", "::__elFirstInit()", FrameTime(), null, null);
-      return;
-    }
-  }
+ppmod.onauto(function () {
 
   // The uppercase credits map is used as a way to return to a functioning menu
   if (GetMapName() == "SP_A5_CREDITS") {
-    EntFire("credits", "Kill");
-    EntFire("credits_music", "Kill");
-    EntFire("logic_script", "Kill");
-    EntFireByHandle(Entities.First(), "RunScriptCode", "SendToConsole(\"fadeout 0\")", FrameTime(), null, null);
-    EntFireByHandle(Entities.First(), "RunScriptCode", "SendToConsole(\"disconnect\")", 1.0, null, null);
+    ppmod.fire("credits", "Kill");
+    ppmod.fire("credits_music", "Kill");
+    ppmod.fire("logic_script", "Kill");
+    ppmod.wait(function () {
+      SendToConsole("fadeout 0");
+    }, FrameTime());
+    ppmod.wait(function () {
+      SendToConsole("disconnect");
+    }, 1.0);
     return;
   }
 
@@ -49,15 +34,15 @@ if (!("Entities" in this)) return;
   }
 
   // Connect outputs to run finish events
-  EntFire("@relay_pti_level_end", "AddOutput", "OnTrigger !self:RunScriptCode:__elFinish():0.1:1");
-  EntFire("@changelevel", "AddOutput", "OnChangeLevel !self:RunScriptCode:__elFinish():0.2:1");
+  ppmod.addscript("@relay_pti_level_end", "OnTrigger", "::__elFinish()", 0.1, 1);
+  ppmod.addscript("@changelevel", "OnChangeLevel", "::__elFinish()", 0.2, 1);
   ::RequestMapRating <- ::__elFinish;
 
   // Fix BEEmod maps with pellet dependency
-  local pelletWarning = null;
-  while (pelletWarning = Entities.FindByName(pelletWarning, "@stop_for_pellets")) {
+  ppmod.forent("@stop_for_pellets", function (pelletWarning) {
+    if (!ppmod.validate(pelletWarning)) return;
     pelletWarning.Destroy();
-  }
+  });
 
   // Fix broken PeTI exit airlock door in maps last updated in June 2012
   IncludeScript("june_2012_airlock_fixup");
@@ -71,18 +56,16 @@ if (!("Entities" in this)) return;
     local existingRelayIdx = ::__elAirlockFixupTable[mapKey];
     local existingRelayName = "InstanceAuto" + existingRelayIdx + "-relay_leaving_level";
     local newRelay = Entities.CreateByClassname("logic_relay");
-    newRelay.__KeyValueFromString("Targetname", "doorexit1-relay_leaving_level");
-    if (newRelay.ValidateScriptScope()) {
-      local scope = newRelay.GetScriptScope();
-      scope["InputEnable"] <- function ():(existingRelayName) {
-        EntFire(existingRelayName, "Enable");
-      };
-      scope["Inputenable"] <- scope["InputEnable"];
-    }
+    local hookFunction = function ():(existingRelayName) {
+      ppmod.fire(existingRelayName, "Enable");
+    };
+    newRelay.targetname = "doorexit1-relay_leaving_level";
+    ppmod.hook(newRelay, "Enable", hookFunction);
+    ppmod.hook(newRelay, "enable", hookFunction);
   }
 
   // End run on PeTI restart trigger
-  local restartTrigger = Entities.FindByName(null, "@preview_restart_trigger");
+  local restartTrigger = ppmod.get("@preview_restart_trigger");
   if (restartTrigger) {
     local hookFunction = function ():(restartTrigger) {
       if (activator == restartTrigger || caller == restartTrigger) {
@@ -103,8 +86,8 @@ if (!("Entities" in this)) return;
     }
   }
   // Slightly more rigorous check for PeTI restart text
-  local restartText = Entities.FindByName(null, "@preview_complete_message");
-  if (!restartText) restartText = Entities.FindByName(null, "preview_complete_message");
+  local restartText = ppmod.get("@preview_complete_message");
+  if (!restartText) restartText = ppmod.get("preview_complete_message");
   if (restartText) if (restartText.ValidateScriptScope()) {
     local scope = restartText.GetScriptScope();
     scope["InputDisplay"] <- function () {
@@ -118,8 +101,8 @@ if (!("Entities" in this)) return;
   }
 
   // End run on "End of playtest" text
-  local playtestText = Entities.FindByName(null, "@end_of_playtest_text");
-  if (!playtestText) playtestText = Entities.FindByName(null, "end_of_playtest_text");
+  local playtestText = ppmod.get("@end_of_playtest_text");
+  if (!playtestText) playtestText = ppmod.get("end_of_playtest_text");
   if (playtestText) if (playtestText.ValidateScriptScope()) {
     local scope = playtestText.GetScriptScope();
     scope["InputDisplay"] <- function () {
@@ -131,7 +114,9 @@ if (!("Entities" in this)) return;
 
   // Create saves one second after the run starts
   if (!IsMultiplayer()) {
-    EntFire("worldspawn", "RunScriptCode", "printl(\"elMakeSaves\")", 1.0);
+    ppmod.wait(function () {
+      printl("elMakeSaves");
+    }, 1.0);
   }
 
   // Fix any residual custom sounds
@@ -145,24 +130,25 @@ if (!("Entities" in this)) return;
 
   // Prevent restarting the map after finishing the level in co-op
   if (IsMultiplayer()) {
-    local levelEndRelay = Entities.FindByName(null, "@relay_pti_level_end");
+    local levelEndRelay = ppmod.get("@relay_pti_level_end");
     if (levelEndRelay) if (levelEndRelay.ValidateScriptScope()) {
       local scope = levelEndRelay.GetScriptScope();
+      printl("balalala");
       scope["InputTrigger"] <- function () {
         ::__elFinish();
-        EntFire("point_clientcommand", "Kill");
-        EntFire("point_servercommand", "Kill");
-        EntFire("point_broadcastclientcommand", "Kill");
-        EntFire("point_changelevel", "Kill");
-        EntFire("trigger_changelevel", "Kill");
-        EntFire("trigger_transition", "Kill");
+        ppmod.forent("point_clientcommand", function (ent) { ent.Destroy() });
+        ppmod.forent("point_servercommand", function (ent) { ent.Destroy() });
+        ppmod.forent("point_broadcastclientcommand", function (ent) { ent.Destroy() });
+        ppmod.forent("point_changelevel", function (ent) { ent.Destroy() });
+        ppmod.forent("trigger_changelevel", function (ent) { ent.Destroy() });
+        ppmod.forent("trigger_transition", function (ent) { ent.Destroy() });
         return false;
       };
       scope["Inputtrigger"] <- scope["InputTrigger"];
     }
   }
 
-};
+});
 
 ::__elFinishLock <- false;
 // Called when the map end condition is reached
@@ -180,6 +166,3 @@ if (!("Entities" in this)) return;
     printl("\n\nYou are the host. Initiating map request...");
   }
 };
-
-// Run the entrypoint function as soon as entity I/O kicks in
-EntFireByHandle(Entities.First(), "RunScriptCode", "::__elInit()", 0.0, null, null);
