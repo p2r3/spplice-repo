@@ -405,8 +405,10 @@ function downloadMap (data) {
   if (!pathExists(workshopDir)) fs.mkdir(workshopDir);
 
   try {
-    // Perform the download
-    download.file(fullPath, data.file_url);
+    // Route download through Epochtal's API to unzip potentially compressed maps
+    const ugcid = data.file_url.split("/ugc/")[1].split("/");
+    const downloadURL = HTTP_ADDRESS + "/api/workshopper/ugc/\"" + ugcid[0] + "\"/\"" + ugcid[1] + "\"";
+    download.file(fullPath, downloadURL);
     // Return the map path for use with the "map" command
     return { path: outputPath, url: pageURL };
   } catch (err) {
