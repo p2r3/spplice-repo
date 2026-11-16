@@ -367,6 +367,11 @@ function forceRandomMap (previous) {
 function getRandomMap (previous) {
 
   const data = getWorkshopperJson(previous);
+  if (!previous && data && "errors" in data) {
+    for (var i = 0; i < data.errors.length; i ++) {
+      sendToConsole(gameSocket, 'echo "[RTI] ' + data.errors[i] + '"');
+    }
+  }
 
   // Depending on the type of query, download either one or two maps
   if (previous) {
